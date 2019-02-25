@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { getRestaurants } from "../../services/restaurantService";
-import Restaurant from '../Restaurant/Restaurant';
+import Restaurant from "../Restaurant/Restaurant";
 
 export class HomePage extends Component {
   state = {
@@ -9,12 +9,10 @@ export class HomePage extends Component {
 
   render() {
     return (
-      <div>
-        <ul>
-          {this.state.restaurants.map(item => (
-            <Restaurant key={item._id} item={item}/>
-          ))}
-        </ul>
+      <div className="row">
+        {this.state.restaurants.map(item => (
+          <Restaurant key={item._id} item={item} />
+        ))}
       </div>
     );
   }

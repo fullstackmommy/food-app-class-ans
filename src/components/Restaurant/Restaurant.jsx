@@ -7,7 +7,7 @@ function Restaurant({ item }) {
   const cardStyle = { width: "20rem" };
 
   return (
-    <div className="col-sm-6 col-md-6 col-lg-4 col-xl-3 d-flex mb-4">
+    <div className="card-col">
       <div className="card" style={cardStyle}>
         <img src={imageUrl} className="card-img-top" alt={name} />
         <div className="card-body">

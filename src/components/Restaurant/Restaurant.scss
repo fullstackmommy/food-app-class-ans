@@ -1,0 +1,10 @@
+@import "~bootstrap/scss/bootstrap";
+
+.card-col {
+  @extend .col-sm-6;
+  @extend .col-md-6;
+  @extend .col-lg-4;
+  @extend .col-xl-3;
+  @extend .d-flex;
+  @extend .mb-3;
+}

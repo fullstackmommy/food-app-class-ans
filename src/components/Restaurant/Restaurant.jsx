@@ -1,4 +1,5 @@
 import React from "react";
+import "./Restaurant.scss"
 
 function Restaurant({ item }) {
   const { name, openingTime, closingTime, cuisine, imageUrl } = item;

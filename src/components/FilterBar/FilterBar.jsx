@@ -12,9 +12,9 @@ function FilterBar({cuisines, handleClick, selectedCuisineId}) {
   }
 
   return (
-    <div className="btn-group" role="group" aria-label="Basic example">
+    <div className="btn-group" role="group">
       {cuisines.map(cuisine => (
-        <button key={cuisine._id} type="button" className={getClassName(cuisine._id)} onClick={() => handleClick(cuisine)}>
+        <button data-testid={`filter-btn-${cuisine.name.toLowerCase()}`} key={cuisine._id} type="button" className={getClassName(cuisine._id)} onClick={() => handleClick(cuisine)}>
           {cuisine.name}
         </button>
       ))}

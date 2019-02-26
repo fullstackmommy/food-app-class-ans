@@ -3,6 +3,7 @@ import { getRestaurants } from "../../services/restaurantService";
 import { getCuisines, getDefaultCuisine } from "../../services/cuisineService";
 import Restaurant from "../Restaurant/Restaurant";
 import FilterBar from "../FilterBar/FilterBar";
+import SortBySelect from "../SortBySelect/SortBySelect";
 import "./HomePage.scss";
 
 class HomePage extends Component {
@@ -28,13 +29,18 @@ class HomePage extends Component {
 
     return (
       <div className="container">
-        <div className="row">
-          <div className="col-4 mx-auto mt-3">
+        <div className="row justify-content-between align-items-center mt-3">
+          <div className="col-md-6">
             <FilterBar
               cuisines={cuisines}
               selected={selectedCuisine}
               handleClick={this.handleCuisineSelect}
             />
+          </div>
+          <div className="col-md-6">
+            <div className="d-flex justify-content-end">
+            <SortBySelect />
+            </div>
           </div>
         </div>
 

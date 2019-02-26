@@ -24,7 +24,7 @@ class HomePage extends Component {
       <div className="container">
         <div className="row">
           <div className="col-4 mx-auto mt-3">
-            <FilterBar cuisines={cuisines} handleClick={this.handleClick}/>
+            <FilterBar cuisines={cuisines} handleClick={this.handleClick} selectedCuisineId={selectedCuisineId} />
           </div>
         </div>
         <div className="row">

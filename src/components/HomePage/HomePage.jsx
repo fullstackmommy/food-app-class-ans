@@ -12,8 +12,10 @@ class HomePage extends Component {
     const { restaurants } = this.state;
     return (
       <div className="container">
-        <div className="d-flex justify-content-center">
-          <FilterBar />
+        <div className="">
+          <div className="">
+            <FilterBar />
+          </div>
         </div>
         <div className="row">
           {restaurants.map(restaurant => (

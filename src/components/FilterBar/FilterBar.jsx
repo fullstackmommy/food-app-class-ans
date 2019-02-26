@@ -18,7 +18,6 @@ function FilterBar({cuisines, handleClick, selectedCuisineId}) {
           {cuisine.name}
         </button>
       ))}
-      <p>a paragraph</p>
     </div>
   );
 }

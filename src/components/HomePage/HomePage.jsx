@@ -12,8 +12,8 @@ class HomePage extends Component {
     const { restaurants } = this.state;
     return (
       <div className="container">
-        <div className="">
-          <div className="">
+        <div className="row">
+          <div className="col-4 mx-auto mt-3">
             <FilterBar />
           </div>
         </div>

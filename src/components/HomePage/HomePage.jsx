@@ -1,20 +1,22 @@
 import React, { Component } from "react";
 import { getRestaurants } from "../../services/restaurantService";
+import { getCuisines, getDefaultCuisine } from "../../services/cuisineService";
 import Restaurant from "../Restaurant/Restaurant";
-import "./HomePage.scss";
 import FilterBar from "../FilterBar/FilterBar";
+import "./HomePage.scss";
 
 class HomePage extends Component {
   state = {
-    restaurants: getRestaurants()
+    restaurants: getRestaurants(),
+    cuisines: [getDefaultCuisine(), ...getCuisines()]
   };
   render() {
-    const { restaurants } = this.state;
+    const { restaurants, cuisines } = this.state;
     return (
       <div className="container">
         <div className="row">
           <div className="col-4 mx-auto mt-3">
-            <FilterBar />
+            <FilterBar cuisines={cuisines}/>
           </div>
         </div>
         <div className="row">

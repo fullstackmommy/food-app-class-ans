@@ -1,10 +1,17 @@
 import React from "react";
 
-function SortBySelect() {
+function SortBySelect({ handleSortSelect, selectedSort, selectOptions }) {
   return (
-    <select>
-      <option value="restaurantName">Restaurant Name</option>
-      <option value="averagePrice">Average Price</option>
+    <select
+      className="btn btn-primary"
+      onChange={handleSortSelect}
+      value={selectedSort}
+    >
+      {selectOptions.map((option, index) => (
+        <option key={index} value={option.value}>
+          {option.name}
+        </option>
+      ))}
     </select>
   );
 }

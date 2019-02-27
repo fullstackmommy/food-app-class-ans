@@ -10,7 +10,10 @@ class HomePage extends Component {
   state = {
     restaurants: getRestaurants(),
     cuisines: [getDefaultCuisine(), ...getCuisines()],
-    selectedCuisine: null
+    selectedCuisine: null,
+    selectedSort: "restaurantName",
+    selectOptions: [{name:"Restaurant Name", value: "restaurantName"}, 
+                    {name: "Average Price", value: "averagePrice"}]
   };
 
   handleCuisineSelect = cuisine => {
@@ -20,12 +23,41 @@ class HomePage extends Component {
     });
   };
 
+  handleSortSelect = event => {
+    this.setState({selectedSort: event.target.value})
+  }
+
+  compareByName = (a, b) => {
+    const aName = a.name.toLowerCase()
+    const bName = b.name.toLowerCase()
+    if (aName < bName) {
+        return -1;
+      }
+      if (aName > bName) {
+        return 1;
+      }
+      return 0;
+  }
+  
+  compareByPrice = (a, b) => {
+    return a.averagePrice - b.averagePrice
+  }
+
+  sortByOption = (restaurants, sortOption) => {
+    if(sortOption === "restaurantName"){
+      return restaurants.sort(this.compareByName)
+    }
+    return restaurants.sort(this.compareByPrice)
+  }
+
   render() {
-    const { restaurants, cuisines, selectedCuisine } = this.state;
+    const { restaurants, cuisines, selectedCuisine, selectOptions, selectedSort } = this.state;
     const filteredRestaurantList =
       selectedCuisine && selectedCuisine._id
         ? restaurants.filter(res => res.cuisine._id === selectedCuisine._id)
         : restaurants;
+
+    const sortedRestaurantList = this.sortByOption(filteredRestaurantList, selectedSort)    
 
     return (
       <div className="container">
@@ -39,13 +71,13 @@ class HomePage extends Component {
           </div>
           <div className="col-md-6">
             <div className="d-flex justify-content-end">
-            <SortBySelect />
+            <SortBySelect handleSortSelect={this.handleSortSelect} selectedSort={this.state.selectedSort} selectOptions={selectOptions}/>
             </div>
           </div>
         </div>
 
         <div className="row">
-          {filteredRestaurantList.map(restaurant => (
+          {sortedRestaurantList.map(restaurant => (
             <div className="card-col" key={restaurant._id}>
               <Restaurant details={restaurant} />
             </div>

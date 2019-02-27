@@ -13,7 +13,8 @@ const sampleData = [
     openingTime: "11:00 AM",
     closingTime: "10:30 PM",
     cuisine: { _id: "5c3430ecfc13ae122d000000", name: "Western" },
-    imageUrl: "images/restaurants/5c342ac9fc13ae39f8000000.jpg"
+    imageUrl: "images/restaurants/5c342ac9fc13ae39f8000000.jpg",
+    averagePrice: 15
   },
   {
     _id: "5c342ac9fc13ae39f8000003",
@@ -23,7 +24,8 @@ const sampleData = [
     openingTime: "11:00 AM",
     closingTime: "10:00 PM",
     cuisine: { _id: "5c3430ecfc13ae122d000001", name: "Japanese" },
-    imageUrl: "images/restaurants/5c342ac9fc13ae39f8000003.jpg"
+    imageUrl: "images/restaurants/5c342ac9fc13ae39f8000003.jpg",
+    averagePrice: 20
   }
 ];
 
@@ -63,4 +65,27 @@ test("when All filter is selected the restaurant list will show all cuisines", (
   fireEvent.click(filterBtnAll);
 
   expect(getAllByText("Order").length).toEqual(2);
+});
+
+test("when the page is first loaded restaurants are sorted by name", () => {
+  const { container } = render(<HomePage />);
+
+  const cards = container.querySelectorAll(".card-body");
+  expect(cards.length).toEqual(2);
+  expect(cards[0]).toHaveTextContent(/Ramen Champion/i);
+  expect(cards[1]).toHaveTextContent(/Burger Bar by Fatboy/i);
+});
+
+test("when 'Sort by price' is selected the restaurant list will order by price in ascending order", () => {
+  const { container, getBySelectText, getByTitle, getByTestId } = render(<HomePage />);
+
+  const option = getBySelectText("Restaurant Name")
+  fireEvent.change(option, { target: { value: 'averagePrice' } })
+
+  const cards = container.querySelectorAll(".card-body");
+
+  expect(cards.length).toEqual(2);
+  expect(cards[0]).toHaveTextContent(/Burger Bar by Fatboy/i);
+  expect(cards[1]).toHaveTextContent(/Ramen Champion/i);
+
 });

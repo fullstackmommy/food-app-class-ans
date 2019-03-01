@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { getRestaurants } from "../../services/restaurantService";
-import { getCuisines, getDefaultCuisine } from "../../services/cuisineService";
+import { getDefaultCuisine } from "../../services/cuisineService";
 import Restaurant from "../Restaurant/Restaurant";
 import FilterBar from "../FilterBar/FilterBar";
 import SortBySelect from "../SortBySelect/SortBySelect";
@@ -8,8 +7,8 @@ import "./HomePage.scss";
 
 class HomePage extends Component {
   state = {
-    restaurants: getRestaurants(),
-    cuisines: [getDefaultCuisine(), ...getCuisines()],
+    restaurants: [],
+    cuisines: [],
     selectedCuisine: null,
     sortByOptions: [
       { name: "Restaurant Name", value: "name" },
@@ -17,6 +16,18 @@ class HomePage extends Component {
     ],
     selectedSortBy: "name"
   };
+
+  componentDidMount() {
+    fetch("http://localhost:3001/cuisines")
+      .then(response => response.json())
+      .then(data => this.setState({ cuisines: [getDefaultCuisine(), ...data] }))
+      .catch(error => console.log("There was an error"));
+
+    fetch("http://localhost:3001/restaurants")
+      .then(response => response.json())
+      .then(data => this.setState({ restaurants: data }))
+      .catch(error => console.log("There was an error"));
+  }
 
   handleCuisineSelect = cuisine => {
     const finalCuisine = cuisine.name === "All" ? null : cuisine;
@@ -55,7 +66,7 @@ class HomePage extends Component {
     const filteredRestaurantList = this.filterAndSortRestaurantList();
 
     return (
-      <div data-testid="home-page" >  
+      <div data-testid="home-page">
         <div className="row">
           <div className="col-auto mr-auto">
             <FilterBar

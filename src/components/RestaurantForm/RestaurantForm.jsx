@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Input from "../Input/Input";
 import Select from "../Input/Select";
 import { getCuisines } from '../../services/cuisineService';
+import { saveRestaurant } from "../../services/restaurantService";
 
 export class RestaurantForm extends Component {
   state = {
@@ -11,7 +12,7 @@ export class RestaurantForm extends Component {
       address: "",
       openingTime: "",
       closingTime: "",
-      cuisineId: "",
+      cuisine: "",
       averagePrice: 0,
       imageUrl: ""
     }
@@ -31,18 +32,28 @@ export class RestaurantForm extends Component {
     this.setState({data: copy})
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault()
+    const {data, cuisines} = this.state
+    const copy = {...data}
+    const foundCuisine = cuisines.find(cuisine => cuisine._id === copy.cuisine)
+    copy.cuisine = foundCuisine
+    saveRestaurant(copy);
+    this.props.history.replace("/admin")
+  }
+
   render() {
     const {cuisines} = this.state
-    const {handleChange} = this
+    const {handleChange, handleSubmit} = this
     return (
       <div className="w-75 mx-auto">
         <h1>Restaurant form</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <Input name="Name" type="text" handleChange={handleChange}/>
           <Input name="Address" type="text" handleChange={handleChange}/>
           <Input name="Opening Time" type="text" handleChange={handleChange}/>
           <Input name="Closing Time" type="text" handleChange={handleChange}/>
-          <Select name="Cuisine" options={cuisines} handleChange={handleChange} keyName="cuisineId"/>
+          <Select name="Cuisine" options={cuisines} handleChange={handleChange} keyName="cuisine"/>
           <Input name="Average Price" type="number" handleChange={handleChange}/>
           <Input name="Image URL" type="text" handleChange={handleChange}/>
           <button className="btn btn-primary btn-sm">Submit</button>

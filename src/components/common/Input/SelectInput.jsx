@@ -1,11 +1,11 @@
 import React from "react";
 
-function SelectInput({ name, label, options, onChange }) {
+function SelectInput({ name, label, options, onChange, value }) {
   return (
     <div className="form-group">
       <label htmlFor={`${name}-input`}>{label}</label>
       <select
-        defaultValue=""
+        value={value}
         className="custom-select"
         id={`${name}-input`}
         name={name}

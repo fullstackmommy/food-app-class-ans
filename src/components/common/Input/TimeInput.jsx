@@ -1,12 +1,12 @@
 import React from "react";
 import TimeField from "react-simple-timefield";
 
-function TimeInput({ name, label, onChange }) {
+function TimeInput({ name, label, onChange, value }) {
   return (
     <div className="form-group">
       <label htmlFor={`${name}-input`}>{label}</label>
       <TimeField
-        value=""
+        value={value}
         onChange={value =>
           onChange({ currentTarget: { name: name, value: value } })
         }

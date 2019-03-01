@@ -8,7 +8,7 @@ import "./HomePage.scss";
 
 class HomePage extends Component {
   state = {
-    restaurants: getRestaurants(),
+    restaurants: [],
     cuisines: [getDefaultCuisine(), ...getCuisines()],
     selectedCuisine: null,
     sortByOptions: [
@@ -17,6 +17,10 @@ class HomePage extends Component {
     ],
     selectedSortBy: "name"
   };
+
+  componentDidMount(){
+    this.setState({restaurants : getRestaurants()})
+  }
 
   handleCuisineSelect = cuisine => {
     const finalCuisine = cuisine.name === "All" ? null : cuisine;

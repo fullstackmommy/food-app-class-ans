@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { getCuisines } from "../../services/cuisineService";
-import { getRestaurants, saveRestaurant } from "../../services/restaurantService";
+import {
+  getRestaurants,
+  saveRestaurant
+} from "../../services/restaurantService";
 import Input from "../common/Input/Input";
 import TimeInput from "../common/Input/TimeInput";
 import SelectInput from "../common/Input/SelectInput";
+import Joi from "joi-browser";
 
 class RestaurantForm extends Component {
   state = {
@@ -11,30 +15,37 @@ class RestaurantForm extends Component {
     data: {
       name: "",
       address: "",
-      openingTime: "",
-      closingTime: "",
+      openingTime: "00:00",
+      closingTime: "00:00",
       cuisineId: "",
       averagePrice: "",
       imageUrl: ""
     }
   };
 
-  componentDidMount() {
-    const id  = this.props.match ? this.props.match.params.id : null;
-    const restaurantFound = getRestaurants().find(
-      restaurant => restaurant._id === id
-    );
-    if (!restaurantFound) return;
-    const newRestaurant = {...restaurantFound}
-    newRestaurant.cuisineId = newRestaurant.cuisine._id
-    delete newRestaurant.cuisine
-
-    this.setState({ data: newRestaurant });
+  schema = {
+    name: Joi.string().required(),
+    address: Joi.string().required(),
+    openingTime: Joi.string().required(),
+    closingTime: Joi.string().required(),
+    cuisineId: Joi.string().required(),
+    averagePrice: Joi.number().integer().min(1).required(),
+    imageUrl: Joi.string().uri().required()
   }
 
+  validate = () => {
+    const opts = {abortEarly: false}
+    const result = Joi.validate(this.state.data, this.schema, opts)
+    console.log(result)
+    return result.error
+  } 
+  
   handleSubmit = e => {
     e.preventDefault();
     const { cuisineId, averagePrice } = this.state.data;
+    const isInvalidForm = this.validate()
+    if (isInvalidForm) return;
+
     const cuisine = getCuisines().find(cuisine => cuisine._id === cuisineId);
 
     let restaurant = { ...this.state.data };
@@ -46,21 +57,54 @@ class RestaurantForm extends Component {
     this.props.history.replace(this.props.returnPath);
   };
 
+  componentDidMount() {
+    const id = this.props.match ? this.props.match.params.id : null;
+    const restaurantFound = getRestaurants().find(
+      restaurant => restaurant._id === id
+    );
+    if (!restaurantFound) return;
+    const newRestaurant = { ...restaurantFound };
+    newRestaurant.cuisineId = newRestaurant.cuisine._id;
+    delete newRestaurant.cuisine;
+
+    this.setState({ data: newRestaurant });
+  }
+
+
   handleChange = ({ currentTarget: input }) => {
     const data = { ...this.state.data };
     data[input.name] = input.value;
     this.setState({ data });
-  };
+  };  
 
   render() {
     const { cuisines } = this.state;
-    const { name, address, openingTime, closingTime, cuisineId, averagePrice, imageUrl } = this.state.data;
+    const {
+      name,
+      address,
+      openingTime,
+      closingTime,
+      cuisineId,
+      averagePrice,
+      imageUrl
+    } = this.state.data;
+
     return (
       <div data-testid="create-page">
-        <h3>{ name ? "Edit Restaurant" : "New Restaurant"}</h3>
+        <h3>{this.props.match.params.id ? "Edit Restaurant" : "New Restaurant"}</h3>
         <form onSubmit={this.handleSubmit}>
-          <Input name="name" label="Name" onChange={this.handleChange} value={name}/>
-          <Input name="address" label="Address" onChange={this.handleChange} value={address}/>
+          <Input
+            name="name"
+            label="Name"
+            onChange={this.handleChange}
+            value={name}
+          />
+          <Input
+            name="address"
+            label="Address"
+            onChange={this.handleChange}
+            value={address}
+          />
           <TimeInput
             name="openingTime"
             label="Opening Time"

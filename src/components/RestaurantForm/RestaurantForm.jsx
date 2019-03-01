@@ -22,7 +22,7 @@ export class RestaurantForm extends Component {
     const type = event.target.type
     const keyName = event.target.name
     const value = event.target.value
-    
+
     if(type === "number"){
       copy[keyName] = parseFloat(value)
     }else {
@@ -42,7 +42,7 @@ export class RestaurantForm extends Component {
           <Input name="Address" type="text" handleChange={handleChange}/>
           <Input name="Opening Time" type="text" handleChange={handleChange}/>
           <Input name="Closing Time" type="text" handleChange={handleChange}/>
-          <Select name="Cuisine" options={cuisines}/>
+          <Select name="Cuisine" options={cuisines} handleChange={handleChange} keyName="cuisineId"/>
           <Input name="Average Price" type="number" handleChange={handleChange}/>
           <Input name="Image URL" type="text" handleChange={handleChange}/>
           <button className="btn btn-primary btn-sm">Submit</button>

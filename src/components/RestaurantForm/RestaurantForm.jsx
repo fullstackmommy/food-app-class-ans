@@ -24,26 +24,32 @@ class RestaurantForm extends Component {
   };
 
   schema = {
+    _id: Joi.string(),
     name: Joi.string().required(),
     address: Joi.string().required(),
     openingTime: Joi.string().required(),
     closingTime: Joi.string().required(),
     cuisineId: Joi.string().required(),
-    averagePrice: Joi.number().integer().min(1).required(),
-    imageUrl: Joi.string().uri().required()
-  }
+    averagePrice: Joi.number()
+      .integer()
+      .min(1)
+      .required(),
+    imageUrl: Joi.string()
+      .uri({ allowRelative: true })
+      .required()
+  };
 
   validate = () => {
-    const opts = {abortEarly: false}
-    const result = Joi.validate(this.state.data, this.schema, opts)
-    console.log(result)
-    return result.error
-  } 
-  
+    const opts = { abortEarly: false };
+    const result = Joi.validate(this.state.data, this.schema, opts);
+    console.log(result);
+    return result.error;
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     const { cuisineId, averagePrice } = this.state.data;
-    const isInvalidForm = this.validate()
+    const isInvalidForm = this.validate();
     if (isInvalidForm) return;
 
     const cuisine = getCuisines().find(cuisine => cuisine._id === cuisineId);
@@ -70,12 +76,11 @@ class RestaurantForm extends Component {
     this.setState({ data: newRestaurant });
   }
 
-
   handleChange = ({ currentTarget: input }) => {
     const data = { ...this.state.data };
     data[input.name] = input.value;
     this.setState({ data });
-  };  
+  };
 
   render() {
     const { cuisines } = this.state;
@@ -91,7 +96,9 @@ class RestaurantForm extends Component {
 
     return (
       <div data-testid="create-page">
-        <h3>{this.props.match.params.id ? "Edit Restaurant" : "New Restaurant"}</h3>
+        <h3>
+          {this.props.match.params.id ? "Edit Restaurant" : "New Restaurant"}
+        </h3>
         <form onSubmit={this.handleSubmit}>
           <Input
             name="name"

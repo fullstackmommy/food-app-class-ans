@@ -8,11 +8,21 @@ class AdminPage extends Component {
     restaurants: []
   };
 
-  componentDidMount() {
+  fetchRestaurants = () => {
     fetch("http://localhost:3001/restaurants")
       .then(response => response.json())
       .then(data => this.setState({ restaurants: data }))
       .catch(error => console.log("There was an error"));
+  };
+
+  componentDidMount() {
+    this.fetchRestaurants();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.restaurants.length !== this.state.restaurants.length) {
+      this.fetchRestaurants();
+    }
   }
 
   handleDelete = restaurantId => {

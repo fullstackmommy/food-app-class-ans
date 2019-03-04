@@ -170,7 +170,12 @@ class RestaurantForm extends Component {
             value={imageUrl}
             error={error.imageUrl}
           />
-          <button className="btn btn-primary btn-sm" disabled={this.validate()}>Save</button>
+          <button
+            className="btn btn-primary btn-sm"
+            disabled={this.validate() ? true : false}
+          >
+            Save
+          </button>
         </form>
       </div>
     );

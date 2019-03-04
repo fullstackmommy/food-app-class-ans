@@ -125,14 +125,14 @@ class RestaurantForm extends Component {
             label="Name"
             onChange={this.handleChange}
             value={name}
-            error={error["name"]}
+            error={error.name}
           />
           <Input
             name="address"
             label="Address"
             onChange={this.handleChange}
             value={address}
-            error={error["address"]}
+            error={error.address}
           />
           <TimeInput
             name="openingTime"
@@ -159,14 +159,14 @@ class RestaurantForm extends Component {
             type="number"
             onChange={this.handleChange}
             value={averagePrice}
-            error={error["averagePrice"]}
+            error={error.averagePrice}
           />
           <Input
             name="imageUrl"
             label="Image URL"
             onChange={this.handleChange}
             value={imageUrl}
-            error={error["imageUrl"]}
+            error={error.imageUrl}
           />
           <button className="btn btn-primary btn-sm" disabled={this.validate()} >Save</button>
         </form>

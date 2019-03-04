@@ -42,7 +42,6 @@ class RestaurantForm extends Component {
   validate = () => {
     const opts = { abortEarly: false };
     const result = Joi.validate(this.state.data, this.schema, opts);
-    console.log(result);
     return result.error;
   };
 
@@ -144,7 +143,7 @@ class RestaurantForm extends Component {
             onChange={this.handleChange}
             value={imageUrl}
           />
-          <button className="btn btn-primary btn-sm">Save</button>
+          <button className="btn btn-primary btn-sm" disabled={this.validate()} >Save</button>
         </form>
       </div>
     );

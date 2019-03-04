@@ -24,6 +24,7 @@ class RestaurantForm extends Component {
     error: {
       name: "",
       address: "",
+      cuisineId: "",
       averagePrice: "",
       imageUrl: ""
     }
@@ -46,10 +47,10 @@ class RestaurantForm extends Component {
   };
 
   validateField = (inputName, value) => {
-    const schema = {[inputName]: this.schema[inputName]}
-    const result = Joi.validate({[inputName]: value}, schema);
+    const schema = { [inputName]: this.schema[inputName] };
+    const result = Joi.validate({ [inputName]: value }, schema);
     return result.error;
-  }
+  };
 
   validate = () => {
     const opts = { abortEarly: false };
@@ -88,14 +89,14 @@ class RestaurantForm extends Component {
   }
 
   handleChange = ({ currentTarget: input }) => {
-    const copy = {...this.state.error}
-    const isInvalid = this.validateField(input.name, input.value)
-    if(isInvalid){
-      copy[input.name] = isInvalid.details[0].message
-      this.setState({error: copy})
+    const copy = { ...this.state.error };
+    const isInvalid = this.validateField(input.name, input.value);
+    if (isInvalid) {
+      copy[input.name] = isInvalid.details[0].message;
+      this.setState({ error: copy });
     } else {
-      copy[input.name] = ""
-      this.setState({error: copy})
+      copy[input.name] = "";
+      this.setState({ error: copy });
     }
     const data = { ...this.state.data };
     data[input.name] = input.value;
@@ -152,6 +153,7 @@ class RestaurantForm extends Component {
             options={cuisines}
             onChange={this.handleChange}
             value={cuisineId}
+            error={error.cuisineId}
           />
           <Input
             name="averagePrice"
@@ -168,7 +170,7 @@ class RestaurantForm extends Component {
             value={imageUrl}
             error={error.imageUrl}
           />
-          <button className="btn btn-primary btn-sm" disabled={this.validate()} >Save</button>
+          <button className="btn btn-primary btn-sm" disabled={this.validate()}>Save</button>
         </form>
       </div>
     );

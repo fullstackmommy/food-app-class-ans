@@ -8,15 +8,19 @@ class AdminPage extends Component {
     restaurants: []
   };
 
-  fetchRestaurants = () => {
-    fetch("http://localhost:3001/restaurants")
-      .then(response => response.json())
-      .then(data => this.setState({ restaurants: data }))
-      .catch(error => console.log("There was an error"));
+  fetchRestaurants = async () => {
+    try{
+      const response = await fetch("http://localhost:3001/restaurants")
+      const data = await response.json()
+      this.setState({ restaurants: data })
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  componentDidMount() {
-    this.fetchRestaurants();
+  async componentDidMount() {
+    console.log("Component mounting")
+    await this.fetchRestaurants();
   }
 
   componentDidUpdate(prevProps, prevState) {
